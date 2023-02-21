@@ -1,4 +1,4 @@
-package com.example.filmlibrary.model;
+package com.filmlibrary.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

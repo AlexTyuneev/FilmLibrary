@@ -1,4 +1,4 @@
-package com.example.filmlibrary;
+package com.filmlibrary;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

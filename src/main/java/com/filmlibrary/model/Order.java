@@ -1,4 +1,4 @@
-package com.example.filmlibrary.model;
+package com.filmlibrary.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
