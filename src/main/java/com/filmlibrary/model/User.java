@@ -49,11 +49,11 @@ public class User
     private String email;
 
     
-    @ManyToOne
-    @JoinColumn(name = "role_id", nullable = false,
-                foreignKey = @ForeignKey(name = "FK_USER_ROLES"))
-    private Role roles;
+    // @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    // @JoinColumn(name = "role_id", nullable = false,
+    //          foreignKey = @ForeignKey(name = "FK_USER_ROLES"))
+    // private Role roles;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<Order> orders;
 }

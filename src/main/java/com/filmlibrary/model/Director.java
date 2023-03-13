@@ -29,7 +29,7 @@ public class Director
 //    private Set<Book> books;
     
     //чтобы не было главной/не главной таблицы
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     //@JsonIgnore //убирает рекурсию
     //@JsonManagedReference //убирает рекурсию в связке с JsonBackReference, но не будет работать десериализация
     @JoinTable(

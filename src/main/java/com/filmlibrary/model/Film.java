@@ -32,13 +32,14 @@ public class Film
     @Enumerated
     private Genre genre;
     
-    @ManyToMany
+    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
     @JoinTable(name = "films_directors",
                joinColumns = @JoinColumn(name = "film_id"), foreignKey = @ForeignKey(name = "FK_FILMS_DIRECTORS"),
                inverseJoinColumns = @JoinColumn(name = "director_id"), inverseForeignKey = @ForeignKey(name = "FK_DIRECTORS_FILMS"))
     //@JsonBackReference
     private Set<Director> directors;
     
-    @OneToMany(mappedBy = "film")
+    @OneToMany(mappedBy = "film", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Set<Order> orders;
 }

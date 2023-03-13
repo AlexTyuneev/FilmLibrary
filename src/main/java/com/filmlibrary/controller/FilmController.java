@@ -33,9 +33,9 @@ public class FilmController
         this.directorRepository = directorRepository;
     }
     
-    @Operation(description = "Добавить автора к книге", method = "addDirector")
+    @Operation(description = "Добавить режиссера к фильму", method = "addDirector")
     @RequestMapping(value = "/addDirector", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Film> addAuthor(@RequestParam(value = "filmId") Long filmId,
+    public ResponseEntity<Film> addDirector(@RequestParam(value = "filmId") Long filmId,
                                           @RequestParam(value = "directorId") Long directorId) {
         Film film = filmRepository.findById(filmId).orElseThrow(() -> new NotFoundException("Фильм с переданным ID не найден"));
         Director director = directorRepository.findById(directorId).orElseThrow(() -> new NotFoundException("Режиссер с таким ID не найден"));

@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 public class Order
       extends GenericModel {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_RENT_BOOK_INFO_USER"))
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_ORDER_USER"))
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "film_id", foreignKey = @ForeignKey(name = "FK_RENT_BOOK_INFO_BOOK"))
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "film_id", foreignKey = @ForeignKey(name = "FK_ORDER_FILM"))
     private Film film;
 
     
