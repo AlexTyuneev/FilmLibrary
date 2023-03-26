@@ -19,7 +19,9 @@ public class FilmDTO
   private String country;
   private Genre genre;
   private Set<Long> directorsIds;
-  
+
+
+
   //    public BookDTO(Book book) {
 //        BookDTO bookDTO = new BookDTO();
 //        //из entity делаем DTO

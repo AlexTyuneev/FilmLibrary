@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Фильмы библиотеки</title>
+    <style>
+        .film-link {
+            text-decoration: none;
+        }
+
+        .film-link:hover {
+            color: #001445;
+        }
+
+        .not-enough-film {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Все фильмы библиотеки</h1>
+    <div class="row">
+        <div class="col">
+            <a href="films/add"
+               class="btn btn-secondary"
+               role="button"
+               style="float: right"
+               aria-disabled="true">Добавить фильм</a>
+        </div>
+
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Год премьеры</th>
+            <th scope="col">Жанр</th>
+<!--            <th scope="col">Место хранения</th>-->
+<!--            <th scope="col">Количество</th>-->
+
+            <th scope="col">Режиссер(ы)</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="film : ${films}">
+            <td>
+                <a class="film-link" th:href="'/films/' + ${film.getId()}" th:text="${film.getFilmTitle()}"></a>
+            </td>
+            <td th:text="${film.getPremierYear()}"></td>
+            <td th:text="${film.getGenre().getGenreTextDisplay()}"></td>
+<!--            <td th:text="${film.getStoragePlace()}"></td>-->
+<!--            <td th:classappend="${film.getAmount() <= 0} ? 'not-enough-film'"-->
+<!--                th:text="${film.getAmount()} <= 0 ? 'Нет в наличии' : ${film.getAmount()}"></td>-->
+
+            <td>
+                <ul>
+                    <li th:each="director : ${film.getDirectors()}" th:text="${director.getDirectorFio()}"></li>
+                </ul>
+            </td>
+            <td>
+                <div class="col">
+                    <a th:href="'/films/addDirector2Film/' + ${film.getId()}"
+                       class="btn btn-secondary"
+                       role="button"
+                       style="float: right"
+                       aria-disabled="true">Добавить режиссёра</a>
+                </div>
+            </td>
+
+
+        </tr>
+
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

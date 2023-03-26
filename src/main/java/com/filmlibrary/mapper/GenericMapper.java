@@ -84,5 +84,6 @@ public abstract class GenericMapper<E extends GenericModel, D extends GenericDTO
     protected abstract Set<Long> getIds(E entity);
     @PostConstruct
     protected abstract void setupMapper();
-    
+
+
 }
