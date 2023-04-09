@@ -18,8 +18,11 @@ public class OrderDTO
 //    private UserDTO user;
     private LocalDateTime rentDate;
     private Integer rentPeriod;
+    private LocalDateTime returnDate;
+    private Boolean returned;
     private boolean isPurchase;
     private Long filmId;
     private Long userId;
+    private FilmDTO filmDTO;
     
 }

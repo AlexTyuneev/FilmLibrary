@@ -11,7 +11,9 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users",
+        uniqueConstraints = {@UniqueConstraint(name = "uniqueEmail", columnNames = "email"),
+        @UniqueConstraint(name = "uniqueLogin", columnNames = "login")})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -47,6 +49,16 @@ public class User
     
     @Column(name = "email", nullable = false)
     private String email;
+
+    @Column(name = "change_password_token")
+    private String changePasswordToken;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "role_id", nullable = false,
+            foreignKey = @ForeignKey(name = "FK_USER_ROLES"))
+    private Role role;
+
+    @Column(name = "is_deleted")
+    private boolean isDeleted;
 
     
     // @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

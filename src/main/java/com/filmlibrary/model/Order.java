@@ -35,6 +35,8 @@ public class Order
     //rent_period - количество дней аренды, если не указано, то по-умолчанию - 14 дней
     @Column(name = "rent_period", nullable = false)
     private Integer rentPeriod;
+    @Column(name = "return_date", nullable = false)
+    private LocalDateTime returnDate;
 
     @Column(name = "purchase", nullable = false)
     private boolean isPurchase;
