@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Режиссеры</title>
+    <style>
+        .director-link {
+            text-decoration: none;
+        }
+
+        .director-link:hover {
+            color: #001445;
+        }
+
+        .not-enough-director {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>Все режиссеры</h1>
+    <div class="row">
+        <div class="col">
+            <a href="directors/add"
+               class="btn btn-secondary"
+               role="button"
+               style="float: right"
+               aria-disabled="true">Добавить режиссера</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Фамилия</th>
+<!--            <th scope="col">Жанр</th>-->
+<!--            <th scope="col">Место хранения</th>-->
+<!--            <th scope="col">Количество</th>-->
+<!--            <th scope="col">Дата публикации</th>-->
+            <th scope="col">Фильм(ы)</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="director : ${directors}">
+            <td>
+                <a class="director-link" th:href="'/directors/' + ${director.getId()}" th:text="${director.getDirectorFio()}"></a>
+            </td>
+<!--            <td th:text="${film.getGenre().getGenreTextDisplay()}"></td>-->
+<!--            <td th:text="${film.getStoragePlace()}"></td>-->
+<!--            <td th:classappend="${film.getAmount() <= 0} ? 'not-enough-film'"-->
+<!--                th:text="${film.getAmount()} <= 0 ? 'Нет в наличии' : ${film.getAmount()}"></td>-->
+<!--            <td th:text="${film.getPublishDate()}"></td>-->
+            <td>
+                <ul>
+                    <li th:each="film : ${director.getFilms()}" th:text="${film.getFilmTitle()}"></li>
+                </ul>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

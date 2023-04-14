@@ -4,6 +4,7 @@ import com.filmlibrary.dto.DirectorDTO;
 import com.filmlibrary.model.Director;
 import com.filmlibrary.model.GenericModel;
 import com.filmlibrary.repository.FilmRepository;
+import com.filmlibrary.utils.DateFormatter;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -30,7 +31,9 @@ public class DirectorMapper
         modelMapper.createTypeMap(Director.class, DirectorDTO.class)
               .addMappings(m -> m.skip(DirectorDTO::setFilmsIds)).setPostConverter(toDtoConverter());
         modelMapper.createTypeMap(DirectorDTO.class, Director.class)
-              .addMappings(m -> m.skip(Director::setFilms)).setPostConverter(toEntityConverter());
+              .addMappings(m -> m.skip(Director::setFilms)).setPostConverter(toEntityConverter())
+                .addMappings(m -> m.skip(Director::setBirthDate)).setPostConverter(toEntityConverter());
+
     }
     
     @Override
@@ -41,6 +44,8 @@ public class DirectorMapper
         else {
             destination.setFilms(Collections.emptySet());
         }
+        destination.setBirthDate(DateFormatter.formatStringToDate(source.getBirthDate()));
+
     }
     
     @Override

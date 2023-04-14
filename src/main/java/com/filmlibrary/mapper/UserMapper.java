@@ -4,6 +4,7 @@ import com.filmlibrary.dto.UserDTO;
 import com.filmlibrary.model.GenericModel;
 import com.filmlibrary.model.User;
 import com.filmlibrary.repository.OrderRepository;
+import com.filmlibrary.utils.DateFormatter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import java.util.Collections;
@@ -29,7 +30,9 @@ public class UserMapper
         modelMapper.createTypeMap(User.class, UserDTO.class)
               .addMappings(m -> m.skip(UserDTO::setUserOrders)).setPostConverter(toDtoConverter());
         modelMapper.createTypeMap(UserDTO.class, User.class)
-              .addMappings(m -> m.skip(User::setOrders)).setPostConverter(toEntityConverter());
+              .addMappings(m -> m.skip(User::setOrders)).setPostConverter(toEntityConverter())
+              .addMappings(m -> m.skip(User::setBirthDate)).setPostConverter(toEntityConverter());
+
     }
     
     @Override
@@ -40,6 +43,8 @@ public class UserMapper
         else {
             destination.setOrders(Collections.emptySet());
         }
+        destination.setBirthDate(DateFormatter.formatStringToDate(source.getBirthDate()));
+
     }
     
     @Override

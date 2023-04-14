@@ -52,7 +52,17 @@ public abstract class GenericService<T extends GenericModel, N extends GenericDT
         List<N> result = mapper.toDTOs(objects.getContent());
         return new PageImpl<>(result, pageable, objects.getTotalElements());
     }
-    
+    public Page<N> listAllNotDeleted(Pageable pageable) {
+        Page<T> preResult = repository.findAllByIsDeletedFalse(pageable);
+        List<N> result = mapper.toDTOs(preResult.getContent());
+        return new PageImpl<>(result, pageable, preResult.getTotalElements());
+    }
+
+    public List<N> listAllNotDeleted() {
+        return mapper.toDTOs(repository.findAllByIsDeletedFalse());
+    }
+
+
     /***
      * Получить информацию о конкретном объекте/сущности по ID.
      *
@@ -70,9 +80,8 @@ public abstract class GenericService<T extends GenericModel, N extends GenericDT
      * @return - сохраненная в БД сущность в формате DTO.
      */
     public N create(N object) {
-        /*
         object.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-        object.setCreatedWhen(LocalDateTime.now()); */
+        object.setCreatedWhen(LocalDateTime.now());
         return mapper.toDto(repository.save(mapper.toEntity(object)));
     }
     
@@ -85,13 +94,48 @@ public abstract class GenericService<T extends GenericModel, N extends GenericDT
     public N update(N object) {
         return mapper.toDto(repository.save(mapper.toEntity(object)));
     }
-    
+
     /***
-     * Удаление сущности из БД.
+     * Софт Удаление сущности (пометка на удаление).
      *
-     * @param id - идентификатор сущности, которая должна быть удалена.
+     * @param id - идентификатор сущности, которая должна быть помечена на удаление.
      */
-    public void delete(Long id) throws MyDeleteException {
-        repository.deleteById(id);
+    public void deleteSoft(Long id) throws MyDeleteException {
+        T obj = repository.findById(id).orElseThrow(() -> new NotFoundException("Объект не найден с айди: " + id));
+        markAsDeleted(obj);
+        repository.save(obj);
     }
+
+    /**
+     * Восстановление помеченной записи, как удаленной.
+     *
+     * @param id - идентификатор сущности, которая должна быть восстановлена
+     */
+    public void restore(Long id) {
+        T obj = repository.findById(id).orElseThrow(() -> new NotFoundException("Объект не найден с айди: " + id));
+        unMarkAsDeleted(obj);
+        repository.save(obj);
+    }
+
+        /***
+         * Хард Удаление сущности из БД.
+         *
+         * @param id - идентификатор сущности, которая должна быть удалена.
+         */
+        public void deleteHard(Long id) throws MyDeleteException {
+            repository.deleteById(id);
+        }
+
+        public void markAsDeleted(GenericModel genericModel) {
+            genericModel.setDeleted(true);
+            genericModel.setDeletedWhen(LocalDateTime.now());
+            genericModel.setDeletedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+
+        public void unMarkAsDeleted(GenericModel genericModel) {
+            genericModel.setDeleted(false);
+            genericModel.setDeletedWhen(null);
+            genericModel.setDeletedBy(null);
+        }
+
 }

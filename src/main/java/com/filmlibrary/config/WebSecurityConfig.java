@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -17,21 +17,23 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import java.util.Arrays;
 
 import static com.filmlibrary.constants.SecurityConstants.*;
+//import static com.filmlibrary.constants.SecurityConstants.REST.FILMS_PERMISSION_LIST;
+//import static com.filmlibrary.constants.SecurityConstants.REST.FILMS_WHITE_LIST;
 import static com.filmlibrary.constants.UserRolesConstants.*;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-    
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CustomUserDetailsService customUserDetailsService;
-    
+
     public WebSecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder,
                              CustomUserDetailsService customUserDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.customUserDetailsService = customUserDetailsService;
     }
-    
+
     //https://docs.spring.io/spring-security/reference/servlet/exploits/firewall.html
     @Bean
     public HttpFirewall httpFirewall() {
@@ -42,14 +44,16 @@ public class WebSecurityConfig {
         firewall.setAllowedHttpMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         return firewall;
     }
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
 //              csrf().disable()
-              .csrf(csrf -> csrf
-                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                   )
+              .cors(AbstractHttpConfigurer::disable)
+              .csrf(AbstractHttpConfigurer::disable)
+//              .csrf(csrf -> csrf
+//                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                   )
               //Настройка http запросов - кому куда можно/нельзя
               .authorizeHttpRequests((requests) -> requests
                                            .requestMatchers(RESOURCES_WHITE_LIST.toArray(String[]::new)).permitAll()
@@ -78,7 +82,7 @@ public class WebSecurityConfig {
                      );
         return http.build();
     }
-    
+
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder);

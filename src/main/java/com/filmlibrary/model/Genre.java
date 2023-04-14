@@ -3,6 +3,7 @@ package com.filmlibrary.model;
 public enum Genre {
     FANTASY("Фэнтези"),
     SCI_FI("Скай-фай"),
+    HORROR ("Ужасы"),
     DRAMA("Драма"),
     DETECTIVE("Детектив"),
     COMEDY("Комедия");

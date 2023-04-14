@@ -43,20 +43,22 @@ public class MVCOrderController {
     }
     
     @GetMapping("/user-films/{id}")
-    public String userBooks(@RequestParam(value = "page", defaultValue = "1") int page,
+    public String userFilms(@RequestParam(value = "page", defaultValue = "1") int page,
                             @RequestParam(value = "size", defaultValue = "5") int pageSize,
                             @PathVariable Long id,
                             Model model) {
+
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-        Page<OrderDTO> rentInfoDTOPage = orderService.listAll(pageRequest);
-        model.addAttribute("orders", rentInfoDTOPage);
-        return "userBooks/viewAllUserBooks";
+        Page<OrderDTO> rentInfoDTOPage = orderService.listUserRentFilms(id, pageRequest);
+        model.addAttribute("rentFilms", rentInfoDTOPage);
+        model.addAttribute("userId", id);
+        return "userFilms/viewAllUserFilms";
     }
     
-    @GetMapping("/return-book/{id}")
-    public String returnBook(@PathVariable Long id) {
+    @GetMapping("/return-film/{id}")
+    public String returnFilm(@PathVariable Long id) {
         CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
            orderService.returnBook(id);
-        return "redirect:/rent/user-books/" + customUserDetails.getUserId();
+        return "redirect:/rent/user-films/" + customUserDetails.getUserId();
     }
 }

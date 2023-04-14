@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 public abstract class GenericDTO {
     
     private Long id;
+    private String createdBy;
+    private LocalDateTime createdWhen;
+
+
     //private String createdBy;
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     //private LocalDateTime createdWhen;

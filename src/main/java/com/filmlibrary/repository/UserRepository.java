@@ -42,7 +42,7 @@ public interface UserRepository
                  select email
                  from users u join orders bri on u.id = bri.user_id
                  where bri.return_date >= now()
-                 /* and bri.returned = false */
+                 and bri.returned = false
                  and u.is_deleted = false
                  """)
         List<String> getDelayedEmails();

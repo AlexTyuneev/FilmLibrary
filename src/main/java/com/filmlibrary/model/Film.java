@@ -3,6 +3,7 @@ package com.filmlibrary.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,9 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @SequenceGenerator(name = "default_gen", sequenceName = "films_id_seq", allocationSize = 1)
-@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@json_id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@json_id")
 
 public class Film
       extends GenericModel {
@@ -31,6 +33,14 @@ public class Film
     @Column(name = "genre", nullable = false)
     @Enumerated
     private Genre genre;
+    @Column(name = "storage_place"/*, nullable = false*/)
+    private String storagePlace;
+
+    @Column(name = "online_copy_path")
+    private String onlineCopyPath;
+
+    @Column(name = "description")
+    private String description;
     
     @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             fetch = FetchType.LAZY)

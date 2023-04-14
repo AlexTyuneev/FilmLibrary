@@ -3,6 +3,7 @@ package com.filmlibrary.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @SequenceGenerator(name = "default_gen", sequenceName = "order_id_seq", allocationSize = 1)
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Order
@@ -37,6 +39,8 @@ public class Order
     private Integer rentPeriod;
     @Column(name = "return_date", nullable = false)
     private LocalDateTime returnDate;
+    @Column(name = "returned", nullable = false)
+    private Boolean returned;
 
     @Column(name = "purchase", nullable = false)
     private boolean isPurchase;

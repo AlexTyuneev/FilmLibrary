@@ -17,7 +17,7 @@ public class UserDTO
     private String firstName;
     private String lastName;
     private String middleName;
-    private LocalDate birthDate;
+    private String birthDate;
     private String phone;
     private String address;
     private String email;

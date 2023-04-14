@@ -61,8 +61,8 @@ public class UserService
             roleDTO.setId(1L);//пользователь
         }
         object.setRole(roleDTO);
-        // object.setCreatedBy("REGISTRATION FORM");
-        // object.setCreatedWhen(LocalDateTime.now());
+        object.setCreatedBy("REGISTRATION FORM");
+        object.setCreatedWhen(LocalDateTime.now());
         object.setPassword(bCryptPasswordEncoder.encode(object.getPassword()));
         return mapper.toDto(repository.save(mapper.toEntity(object)));
     }
@@ -95,7 +95,7 @@ public class UserService
         return new PageImpl<>(result, pageable, users.getTotalElements());
     }
     
-     /*public List<String> getUserEmailsWithDelayedRentDate() {
+     public List<String> getUserEmailsWithDelayedRentDate() {
         return ((UserRepository) repository).getDelayedEmails();
-    }*/
+    }
 }

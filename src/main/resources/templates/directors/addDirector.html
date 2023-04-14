@@ -9,38 +9,36 @@
 <body>
 <div layout:fragment="content">
     <h3 class="mt-3 mb-3">Добавить режиссера</h3>
-    <form style="max-width: 50vw" method="POST" th:action="@{/directors/add}" th:object="${directorForm}">
-        <div class="mb-3">
-            <label for="director_fio" class="form-label">Фамилия режиссера</label>
-            <!--            Название поля инпута должно строго соответствовать названию поля класса (DTO)-->
-            <input name="directorFio" type="text" class="form-control" id="director_fio">
+    <form  class="needs-validation" novalidate style="max-width: 50vw" method="POST" th:action="@{/directors/add}" th:object="${directorForm}">
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <!--Название поля инпута должно строго соответствовать названию поля класса (DTO)-->
+                    <input name="directorFio" type="text" class="form-control" id="directorFio" placeholder="ФИО режиссера" required>
+                    <label for="directorFio">ФИО режиссера</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
         </div>
-<!--        <div class="mb-3">-->
-<!--            <label for="storage" class="form-label">Место хранения</label>-->
-<!--            <input name="storagePlace" type="text" class="form-control" id="storage">-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label for="amount" class="form-label">Количество страниц</label>-->
-<!--            <input name="amount" type="number" class="form-control" id="amount">-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label for="description" class="form-label">Описание</label>-->
-<!--            <input name="description" type="text" class="form-control" id="description">-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label for="date" class="form-label">Год премьеры</label>-->
-<!--            <input name="premierYear" type="text" class="form-control" id="premier_year">-->
-<!--        </div>-->
-<!--        <div class="mb-3">-->
-<!--            <label for="genre" class="form-label">Жанр</label>-->
-<!--            <select class="form-select" name="genre" id="genre">-->
-<!--                <option selected>Выберете жанр из списка:</option>-->
-<!--                <option th:each="genre : ${T(com.filmlibrary.model.Genre).values()}"-->
-<!--                        th:value="${genre}" th:text="${genre.getGenreTextDisplay()}"></option>-->
-<!--            </select>-->
-<!--        </div>-->
-        <button type="submit" class="btn btn-primary">Добавить</button>
-        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+        <div class="mt-3 row g-2">
+            <div class="col-md">
+                <div class="form-floating">
+                    <input name="birthDate" type="date" class="form-control" id="date" placeholder="Дата рождения" required>
+                    <label for="date">Дата рождения</label>
+                    <div class="invalid-feedback">Обязательное поле для заполнения</div>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating">
+                    <textarea name="description" type="text" class="form-control" id="description" placeholder="Описание"></textarea>
+                    <label for="description">Описание</label>
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 row g-2">
+            <button type="submit" class="btn btn-primary" onclick="validateForm()">Добавить</button>
+            <button type="button" class="btn btn-secondary" onclick="window.history.back()">Назад</button>
+        </div>
     </form>
 </div>
 </body>

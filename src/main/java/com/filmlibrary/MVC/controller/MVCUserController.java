@@ -2,6 +2,7 @@ package com.filmlibrary.MVC.controller;
 
 import com.filmlibrary.constants.Errors;
 import com.filmlibrary.dto.UserDTO;
+import com.filmlibrary.exception.MyDeleteException;
 import com.filmlibrary.service.UserService;
 import com.filmlibrary.service.userdetails.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.filmlibrary.constants.UserRolesConstants.ADMIN;
 
@@ -72,6 +74,17 @@ public class MVCUserController {
             userService.sendChangePasswordEmail(userDTO);
             return "redirect:/login";
         }
+    }
+    
+    @GetMapping("/change-password/user")
+    public String changePassword(Model model) {
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDTO userDTO = userService.getOne(Long.valueOf(customUserDetails.getUserId()));
+        UUID uuid = UUID.randomUUID();
+        userDTO.setChangePasswordToken(uuid.toString());
+        userService.update(userDTO);
+        model.addAttribute("uuid", uuid);
+        return "users/changePassword";
     }
     
     @GetMapping("/change-password")
@@ -148,6 +161,7 @@ public class MVCUserController {
                                @RequestParam(value = "size", defaultValue = "10") int pageSize,
                                @ModelAttribute(value = "exception") String exception,
                                Model model) {
+        log.info("Hello from log");
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "login"));
         Page<UserDTO> userPage = userService.listAll(pageRequest);
         model.addAttribute("users", userPage);
@@ -155,7 +169,6 @@ public class MVCUserController {
         return "users/viewAllUsers";
     }
     
-    //TODO: Когда логин под админом, не работает с первого раза поиск - 403 ошибка.
     @PostMapping("/search")
     public String searchUsers(@RequestParam(value = "page", defaultValue = "1") int page,
                               @RequestParam(value = "size", defaultValue = "5") int size,
@@ -184,6 +197,18 @@ public class MVCUserController {
             return "registration";
         }
         userService.create(userDTO);
+        return "redirect:/users/list";
+    }
+    
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) throws MyDeleteException {
+        userService.deleteSoft(id);
+        return "redirect:/users/list";
+    }
+    
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable Long id) {
+        userService.restore(id);
         return "redirect:/users/list";
     }
 }

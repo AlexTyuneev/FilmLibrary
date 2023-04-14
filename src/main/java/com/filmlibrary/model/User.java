@@ -3,6 +3,7 @@ package com.filmlibrary.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @SequenceGenerator(name = "default_gen", sequenceName = "users_id_seq", allocationSize = 1)
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "@json_id")
 
@@ -57,10 +59,7 @@ public class User
             foreignKey = @ForeignKey(name = "FK_USER_ROLES"))
     private Role role;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted;
 
-    
     // @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     // @JoinColumn(name = "role_id", nullable = false,
     //          foreignKey = @ForeignKey(name = "FK_USER_ROLES"))

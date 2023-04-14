@@ -29,8 +29,10 @@ public class FilmMapper
     public void setupMapper() {
         modelMapper.createTypeMap(Film.class, FilmDTO.class)
               .addMappings(m -> m.skip(FilmDTO::setDirectorsIds)).setPostConverter(toDtoConverter());
-        modelMapper.createTypeMap(FilmDTO.class, Film.class)
-              .addMappings(m -> m.skip(Film::setDirectors)).setPostConverter(toEntityConverter());
+        modelMapper.createTypeMap(FilmDTO.class, Film.class);
+              //.addMappings(m -> m.skip(Film::setDirectors)).setPostConverter(toEntityConverter())
+              //.addMappings(m -> m.skip(Film::setPremierYear)).setPostConverter(toEntityConverter());
+
     }
     
     @Override
@@ -48,10 +50,10 @@ public class FilmMapper
         destination.setDirectorsIds(getIds(source));
     }
     
-    protected Set<Long> getIds(Film book) {
-        return Objects.isNull(book) || Objects.isNull(book.getDirectors())
+    protected Set<Long> getIds(Film film) {
+        return Objects.isNull(film) || Objects.isNull(film.getDirectors())
                ? null
-               : book.getDirectors().stream()
+               : film.getDirectors().stream()
                      .map(GenericModel::getId)
                      .collect(Collectors.toSet());
     }
